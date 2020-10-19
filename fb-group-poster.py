@@ -4,62 +4,121 @@ from selenium.webdriver.common.keys import Keys
 import time
 from time import sleep
 
+chromeDriverPath = "/home/ruggero/dev/git/Python-Selenium-Facebook-group-auto-poster/chromedriver"
+facebookWebsite = "https://www.facebook.com"
+
+emailElementID = "email"
+passElementID = "pass"
+loginElementID = "royal_login_button"
+createPostID = "Create Post"
+
+
 def main():
-    # Set up Facebook login account name and password
-    account = "sample@gmail.com"
-    password = "sample"
-
-    # Set up Facebook groups to post, you must be a member of the group
-    groups_links_list = [
-        "https://www.facebook.com/groups/sample1", "https://www.facebook.com/groups/sample2"
-    ]
-
-    # Set up text content to post
-    message = "Checkout an amazing selenium script for posting automaticaaly on Facebook groups! https://github.com/ethanXWL/Python-Selenium-Facebook-group-poster"
+    # Insert here credentials and groups
 
     # Set up paths of images to post
-    images_list = ['C:/Users/OEM/Pictures/sample1.jpg','C:/Users/OEM/Pictures/sample2.jpg']
+    # images_list = ['C:/Users/OEM/Pictures/sample1.jpg',
+    #                'C:/Users/OEM/Pictures/sample2.jpg']
+    imagesList = []
 
-    # Login Facebook
-    chrome_options = webdriver.ChromeOptions()
-    prefs = {"profile.default_content_setting_values.notifications" : 2}
-    chrome_options.add_experimental_option("prefs",prefs)
-    driver = webdriver.Chrome(chrome_options=chrome_options)
-    driver.get('https://www.facebook.com')
-    emailelement = driver.find_element(By.XPATH,'//*[@id="email"]')
-    emailelement.send_keys(account)
-    passelement = driver.find_element(By.XPATH,'//*[@id="pass"]')
-    passelement.send_keys(password)
-    loginelement = driver.find_element(By.XPATH,'//*[@id="loginbutton"]')
-    loginelement.click()
+    driver = initializeChromeDriver()
 
-    # Post on each group
-    for group in groups_links_list:
-        driver.get(group)
-        time.sleep(2)
-        try:
-            driver.find_element(By.XPATH,'//*[@label="Start Discussion"]').click()
-            post_box=driver.find_element_by_css_selector("[name='xhpc_message_text']")
-        except:
-            post_box=driver.find_element_by_css_selector("[name='xhpc_message_text']")
-        post_box.send_keys(message)
-        time.sleep(1)
-        for photo in images_list:
-            photo_element = driver.find_element(By.XPATH,'//input[@type="file"]')
-            photo_element.send_keys(photo)
-            time.sleep(1)
-        time.sleep(6)
-        post_button = driver.find_element_by_xpath("//*[@data-testid='react-composer-post-button']")
-        clickable = False
-        while not clickable:
-            cursor = post_button.find_element_by_tag_name('span').value_of_css_property("cursor")
-            if cursor == "pointer":
-                clickable = True
-            break
-        post_button.click()
-        time.sleep(5)
-    # Close driver
+    facebookLogin(driver, account, password)
+
+    postInGroups(driver, groupsLinkList, message, imagesList)
+
     driver.close()
 
+
+def initializeChromeDriver():
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {"profile.default_content_setting_values.notifications": 2}
+    chrome_options.add_experimental_option("prefs", prefs)
+    driver = webdriver.Chrome(chromeDriverPath, chrome_options=chrome_options)
+    return driver
+
+
+def facebookLogin(driver, account, password):
+    driver.get(facebookWebsite)
+    acceptAll(driver)
+    login(driver, account, password)
+
+
+def acceptAll(driver):
+    acceptAllElement = driver.find_element(
+        By.XPATH, '//*[@data-testid="cookie-policy-banner-accept"]')
+    acceptAllElement.click()
+
+
+def login(driver, account, password):
+    emailElement = driver.find_element(
+        By.XPATH, '//*[@id="' + emailElementID + '"]')
+    emailElement.send_keys(account)
+
+    passElement = driver.find_element(
+        By.XPATH, '//*[@id="' + passElementID + '"]')
+    passElement.send_keys(password)
+
+    loginElement = driver.find_element(
+        By.XPATH, '//*[@data-testid="' + loginElementID + '"]')
+    loginElement.click()
+
+    time.sleep(5)
+
+
+def postInGroups(driver, groupsLinkList, message, imagesList):
+    for group in groupsLinkList:
+
+        print("Posting message in group: ", group)
+        driver.get(group)
+        driver.find_element(
+            By.XPATH, '//*[@aria-label="' + createPostID + '"]').click()
+        time.sleep(2)
+
+        # postBox = driver.find_element_by_css_selector(
+        # "[method='POST']")
+        postBox = driver.find_element_by_xpath(
+            "//*[@role='textbox']/div/div/div/span")
+
+        attr = postBox.get_attribute("data-offset-key")
+
+        postBox.send_keys("Hello world!")
+
+        postButton = driver.find_element_by_xpath(
+            "//*[text() = 'Post']")
+        postButton.click()
+        time.sleep(5)
+
+
+#
+#     time.sleep(5)
+#     try:
+#         driver.find_element(
+#             By.XPATH, '//*[@aria-label="Create Post"]').click()
+#         post_box = driver.find_element_by_css_selector(
+#             "[name='xhpc_message_text']")
+#     except:
+#         post_box = driver.find_element_by_css_selector(
+#             "[name='xhpc_message_text']")
+#     post_box.send_keys(message)
+#     time.sleep(1)
+#     for photo in images_list:
+#         photo_element = driver.find_element(
+#             By.XPATH, '//input[@type="file"]')
+#         photo_element.send_keys(photo)
+#         time.sleep(1)
+#     time.sleep(6)
+#     post_button = driver.find_element_by_xpath(
+#         "//*[@data-testid='react-composer-post-button']")
+#     clickable = False
+#     while not clickable:
+#         cursor = post_button.find_element_by_tag_name(
+#             'span').value_of_css_property("cursor")
+#         if cursor == "pointer":
+#             clickable = True
+#         break
+#     post_button.click()
+
+
 if __name__ == '__main__':
-  main()
+    main()
