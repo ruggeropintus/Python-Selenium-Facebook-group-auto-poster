@@ -16,6 +16,10 @@ createPostID = "Create Post"
 def main():
     # Insert here credentials and groups
 
+    message = ["Ciao Mondo 1", "Hello World 2", "Salu Le Monde"]
+
+    # "Checkout an amazing selenium script for posting automaticaaly on Facebook groups! https://github.com/ethanXWL/Python-Selenium-Facebook-group-poster"
+
     # Set up paths of images to post
     # images_list = ['C:/Users/OEM/Pictures/sample1.jpg',
     #                'C:/Users/OEM/Pictures/sample2.jpg']
@@ -67,27 +71,34 @@ def login(driver, account, password):
 
 
 def postInGroups(driver, groupsLinkList, message, imagesList):
-    for group in groupsLinkList:
+    for num, group in enumerate(groupsLinkList):
 
         print("Posting message in group: ", group)
+        time.sleep(10)
         driver.get(group)
+        time.sleep(10)
+
         driver.find_element(
             By.XPATH, '//*[@aria-label="' + createPostID + '"]').click()
-        time.sleep(2)
+        time.sleep(10)
 
         # postBox = driver.find_element_by_css_selector(
         # "[method='POST']")
+        # postBox = driver.find_element_by_xpath(
+        #     "//*[@aria-describedby='placeholder']/div/div/div/span")
         postBox = driver.find_element_by_xpath(
-            "//*[@role='textbox']/div/div/div/span")
+            "//*[contains(@aria-describedby,'placeholder')]/div/div/div/span")
+        time.sleep(10)
 
-        attr = postBox.get_attribute("data-offset-key")
+        # attr = postBox.get_attribute("data-offset-key")
 
-        postBox.send_keys("Hello world!")
+        postBox.send_keys(message[num])
+        time.sleep(10)
 
         postButton = driver.find_element_by_xpath(
             "//*[text() = 'Post']")
         postButton.click()
-        time.sleep(5)
+        time.sleep(10)
 
 
 #
