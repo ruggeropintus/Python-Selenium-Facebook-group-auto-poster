@@ -12,7 +12,6 @@ passElementID = "pass"
 loginElementID = "royal_login_button"
 createPostID = "Create Post"
 
-
 # groupsLinkList = ["https://www.facebook.com/groups/44856655328/",
 #                   "https://www.facebook.com/groups/kyivdancefestival/",
 #                   "https://www.facebook.com/groups/144534108969160/",
@@ -74,12 +73,39 @@ createPostID = "Create Post"
 #                   "https://www.facebook.com/groups/176145122510771/",
 #                   "https://www.facebook.com/groups/123246504498945/"]
 
-groupsLinkList = ["https://www.facebook.com/groups/120276918610382/",
-                  "https://www.facebook.com/groups/ExodehardcoreSharing/",
-                  "https://www.facebook.com/groups/876308409439219/",
-                  "https://www.facebook.com/groups/593906064787633/",
-                  "https://www.facebook.com/groups/TheAnnihilationProject/",
-                  "https://www.facebook.com/groups/2140010692951821/"]
+# groupsLinkList = ["https://www.facebook.com/groups/120276918610382/",
+#                   "https://www.facebook.com/groups/ExodehardcoreSharing/",
+#                   "https://www.facebook.com/groups/876308409439219/",
+#                   "https://www.facebook.com/groups/593906064787633/",
+#                   "https://www.facebook.com/groups/TheAnnihilationProject/",
+#                   "https://www.facebook.com/groups/2140010692951821/"]
+
+
+# groupsLinkList = ["https://www.facebook.com/groups/1657928417808333/",
+#                   "https://www.facebook.com/groups/111463475532259/",
+#                   "https://www.facebook.com/groups/15359527623/",
+#                   "https://www.facebook.com/groups/1450122935247497/",
+#                   "https://www.facebook.com/groups/UKCSalsaSoc/",
+#                   "https://www.facebook.com/groups/CambridgeCubanSalsa/",
+#                   "https://www.facebook.com/groups/312987445412767/",
+#                   "https://www.facebook.com/groups/viennasalsaevents/",
+#                   "https://www.facebook.com/groups/1073439109364813/",
+#                   "https://www.facebook.com/groups/FollowLeandro/",
+#                   "https://www.facebook.com/groups/salsabachatakizombavideos/",
+#                   "https://www.facebook.com/groups/397975036935975/",
+#                   "https://www.facebook.com/groups/LeedsSalsa/",
+#                   "https://www.facebook.com/groups/869664896782753/"]
+
+groupsLinkList = ["https://www.facebook.com/groups/1980640592165531/",
+                  "https://www.facebook.com/groups/233907926802227/",
+                  "https://www.facebook.com/groups/106803783508170/",
+                  "https://www.facebook.com/groups/djsallover/",
+                  "https://www.facebook.com/groups/108947492513974/",
+                  "https://www.facebook.com/groups/111756225565727/",
+                  "https://www.facebook.com/groups/176323882527718/",
+                  "https://www.facebook.com/groups/1922629534667190/",
+                  "https://www.facebook.com/groups/ambient.downtempo.electronica/",
+                  "https://www.facebook.com/groups/257776851910360/"]
 
 
 def main():
@@ -157,7 +183,8 @@ def login(driver, account, password):
 def postInGroups(driver, groupsLinkList, message, imagesList):
     for num, group in enumerate(groupsLinkList):
 
-        print("Posting message in group: ", group)
+        print("Posting message in group: ", group,
+              " (", num + 1, "/", len(groupsLinkList), ")")
         try:
             driver.get(group)
         except:
